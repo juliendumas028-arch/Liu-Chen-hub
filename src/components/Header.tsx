@@ -11,68 +11,79 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ currentTab, onTabChange, lang, onLangChange }) => {
   const tabs: { id: Tab; label: Record<Language, string> }[] = [
     { id: 'home', label: { en: 'Home', fr: 'Home', cn: '首页' } },
-    { id: 'tv', label: { en: 'TV / Corporate and Social Media Works', fr: 'TV / Corporate and Social Media Works', cn: '电视/商业片' } },
-    { id: 'photography', label: { en: 'Photography', fr: 'Photography', cn: '摄影' } },
+    { id: 'works', label: { en: 'Works', fr: 'Works', cn: '作品' } },
     { id: 'about', label: { en: 'About', fr: 'About', cn: '关于' } },
     { id: 'contact', label: { en: 'Contact', fr: 'Contact', cn: '联系' } },
   ];
 
   return (
-    <header className="flex flex-col items-center pt-8 pb-16 relative bg-white">
-      {/* Ultra subtle language toggle in top right */}
-      <div className="absolute top-4 right-6 flex gap-2 text-[10px] text-neutral-400 font-sans tracking-widest uppercase">
-        <button 
-          onClick={() => onLangChange('en')} 
-          className={lang === 'en' ? 'text-neutral-800 font-medium' : 'hover:text-neutral-600 transition-colors'}
-        >
-          EN
-        </button>
-        <span className="text-neutral-200">|</span>
-        <button 
-          onClick={() => onLangChange('fr')} 
-          className={lang === 'fr' ? 'text-neutral-800 font-medium' : 'hover:text-neutral-600 transition-colors'}
-        >
-          FR
-        </button>
-        <span className="text-neutral-200">|</span>
-        <button 
-          onClick={() => onLangChange('cn')} 
-          className={lang === 'cn' ? 'text-neutral-800 font-medium' : 'hover:text-neutral-600 transition-colors'}
-        >
-          中文
-        </button>
-      </div>
-
-      {/* Centered logo / profile picture (B&W) */}
-      <div className="w-16 h-16 mb-4 overflow-hidden grayscale">
-        <img 
-          src="https://images.unsplash.com/photo-1596726880053-8321e16f3964?auto=format&fit=crop&w=200&q=80" 
-          alt="Liu Chen Logo" 
-          className="w-full h-full object-cover" 
-        />
-      </div>
-
-      {/* Phone number */}
-      <p className="text-neutral-400 text-[13px] mb-12">
-        Tel : + 33 6 64 21 39 17 (Paris)
-      </p>
-
-      {/* Navigation menu */}
-      <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4 px-4">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`text-[14px] transition-colors ${
-              currentTab === tab.id 
-                ? 'text-neutral-800' 
-                : 'text-neutral-400 hover:text-neutral-600'
-            }`}
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-neutral-100 pt-5 pb-4 px-4 sm:px-8 transition-all">
+      <div className="max-w-[1600px] mx-auto flex flex-col items-center relative">
+        
+        {/* Discreet language toggle in top right */}
+        <div className="sm:absolute sm:top-1 sm:right-0 flex items-center gap-2 text-[10px] text-neutral-400 font-sans tracking-widest uppercase mb-2 sm:mb-0">
+          <button 
+            onClick={() => onLangChange('en')} 
+            className={`transition-colors py-1 ${lang === 'en' ? 'text-neutral-900 font-semibold' : 'hover:text-neutral-600'}`}
           >
-            {tab.label[lang]}
+            EN
           </button>
-        ))}
-      </nav>
+          <span className="text-neutral-200">|</span>
+          <button 
+            onClick={() => onLangChange('fr')} 
+            className={`transition-colors py-1 ${lang === 'fr' ? 'text-neutral-900 font-semibold' : 'hover:text-neutral-600'}`}
+          >
+            FR
+          </button>
+          <span className="text-neutral-200">|</span>
+          <button 
+            onClick={() => onLangChange('cn')} 
+            className={`transition-colors py-1 ${lang === 'cn' ? 'text-neutral-900 font-semibold' : 'hover:text-neutral-600'}`}
+          >
+            中文
+          </button>
+        </div>
+
+        {/* Clean Typographic Logo "Liu Chen" in bold */}
+        <button
+          onClick={() => {
+            onTabChange('home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="group flex flex-col items-center text-center cursor-pointer mb-2 transition-transform active:scale-98"
+          title="Liu Chen - Retour à l'accueil"
+        >
+          <h1 className="text-2xl sm:text-[28px] font-bold tracking-[0.18em] uppercase text-neutral-900 group-hover:text-neutral-600 transition-colors select-none font-serif">
+            Liu Chen
+          </h1>
+          <span className="text-[11px] font-sans tracking-[0.25em] uppercase text-neutral-400 mt-0.5">
+            {lang === 'cn' ? '摄影指导 • 巴黎' : 'Directrice de la Photographie • Paris'}
+          </span>
+        </button>
+
+        {/* Navigation bar: Home / Works / About / Contact */}
+        <nav className="flex items-center justify-center gap-8 sm:gap-12 mt-2 pt-2 border-t border-neutral-100/60 w-full max-w-md">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => {
+                onTabChange(tab.id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`text-[13px] sm:text-[14px] font-sans tracking-wider transition-all relative py-1 ${
+                currentTab === tab.id 
+                  ? 'text-neutral-900 font-medium' 
+                  : 'text-neutral-400 hover:text-neutral-700'
+              }`}
+            >
+              <span>{tab.label[lang]}</span>
+              {currentTab === tab.id && (
+                <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-neutral-900" />
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
     </header>
   );
 };

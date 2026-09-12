@@ -9,7 +9,7 @@ import { getStoredProjects, saveStoredProjects, resetStoredProjects } from './ut
 import { ProjectItem } from './types';
 import { Sliders } from 'lucide-react';
 
-export type Tab = 'home' | 'tv' | 'photography' | 'about' | 'contact';
+export type Tab = 'home' | 'works' | 'about' | 'contact';
 export type Language = 'en' | 'fr' | 'cn';
 
 export default function App() {
@@ -135,7 +135,7 @@ export default function App() {
       />
       
       <main className="pb-24">
-        {currentTab === 'home' || currentTab === 'tv' || currentTab === 'photography' ? (
+        {currentTab === 'home' || currentTab === 'works' ? (
           <MinimalGrid 
             tab={currentTab} 
             lang={lang} 

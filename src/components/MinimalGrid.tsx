@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tab, Language } from '../App';
-import { ProjectItem, ProjectCategory } from '../types';
+import { ProjectItem } from '../types';
 import { ArrowLeft, ArrowRight, Sparkles, Edit3, Sliders } from 'lucide-react';
 
 interface MinimalGridProps {
@@ -24,33 +24,11 @@ export const MinimalGrid: React.FC<MinimalGridProps> = ({
   onEditProject,
   onOpenCurator
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('all');
-
-  const filterCategories: { id: ProjectCategory; label: Record<Language, string> }[] = [
-    { id: 'all', label: { en: 'All Works', fr: 'Tous', cn: '全部作品' } },
-    { id: 'fashion-beauty', label: { en: 'Fashion & Beauty', fr: 'Mode & Beauté', cn: '时尚与美妆' } },
-    { id: 'interviews-designers', label: { en: 'Celebrities & Interviews', fr: 'Célébrités & Interviews', cn: '名人与专访' } },
-    { id: 'brand-commercial', label: { en: 'Brands & Commercials', fr: 'Marques & Publicités', cn: '品牌与商业片' } },
-    { id: 'events-exhibitions', label: { en: 'Travel & Expeditions', fr: 'Voyages & Salons', cn: '文旅与大型活动' } },
-    { id: 'cinema-fiction', label: { en: 'Cinema & Fiction', fr: 'Cinéma & Fiction', cn: '电影与纪录片' } }
-  ];
-
-  let displayProjects = projects;
-  
-  if (tab === 'tv') {
-    // Under TV tab, filter by selectedCategory
-    if (selectedCategory !== 'all') {
-      displayProjects = projects.filter(p => p.category === selectedCategory);
-    }
-  } else if (tab === 'photography') {
-    displayProjects = projects.filter(p => p.category === 'fashion-beauty' || p.category === 'interviews-designers');
-  } else if (tab === 'home') {
-    // Show all or top featured works
-    displayProjects = projects;
-  }
+  // In Works / Home: display the full curated collection of projects
+  const displayProjects = projects;
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 md:px-8">
+    <div className="max-w-[1600px] mx-auto px-4 md:px-8 pt-8">
       {/* Curation Mode Active Bar */}
       {isGridCurationActive && (
         <div className="mb-8 p-3 bg-neutral-900 text-white flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
@@ -69,25 +47,6 @@ export const MinimalGrid: React.FC<MinimalGridProps> = ({
               Ouvrir l'Atelier Studio Complet
             </button>
           )}
-        </div>
-      )}
-
-      {/* Discreet Filter Sub-bar for TV / Commercial Works */}
-      {tab === 'tv' && (
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-12 text-[12px] font-sans text-neutral-400">
-          {filterCategories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`transition-colors uppercase tracking-wider py-1 ${
-                selectedCategory === cat.id
-                  ? 'text-neutral-900 border-b border-neutral-900 font-medium'
-                  : 'hover:text-neutral-700'
-              }`}
-            >
-              {cat.label[lang]}
-            </button>
-          ))}
         </div>
       )}
 
